@@ -91,8 +91,8 @@ DATABASES = {
         'NAME': config('DB_NAME'),
         'USER': config('DB_USER'),
         'PASSWORD': config('DB_PASS'),
-        'HOST': config('EMAIL_HOST_USER'),
-        'PORT': config('EMAIL_HOST_PASSWORD')
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT')
     }
 }
 
@@ -183,4 +183,6 @@ CORS_ALLOWED_ORIGINS = [
 CORS_ALLOWED_METHODS = [
     'GET', 'POST', 'PATCH', 'PUT', 'OPTIONS', 'DELETE', 'UPDATE',
 ]
+
+
 

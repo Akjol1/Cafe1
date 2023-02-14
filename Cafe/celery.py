@@ -2,7 +2,7 @@ import os
 
 from celery import Celery
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'restaurant.settings')
-app = Celery('restaurant')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Cafe.settings')
+app = Celery('Cafe')
 app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks()
