@@ -1,14 +1,19 @@
-from django.shortcuts import render
 from rest_framework.views import APIView
-from .serializers import RegisterSerializer
 from rest_framework.response import Response
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authtoken.models import Token
+
+
+from .permissoins import IsActivePermission
 from .models import User
+from .serializers import ChangePasswordSerializer, ForgotPasswordCompleteSerializer, ForgotPaswordSerializer, RegisterSerializer
+
 
 from drf_yasg.utils import swagger_auto_schema
 
 
 class RegisterView(APIView):
-
     @swagger_auto_schema(request_body=RegisterSerializer())
     def post(self, request):
         data = request.data
@@ -35,3 +40,52 @@ class ActivationView(APIView):
             'Activated',
             200
         )
+    
+# class LoginView(ObtainAuthToken):
+#     serializer_class = LoginSerializer
+
+
+class LogoutView(APIView):
+    permission_classes = [IsActivePermission]
+
+    def post(self, request):
+        user = request.user
+        Token.objects.filter(user=user).delete()
+        return Response('Вы вышли со совего аккаунта')
+
+
+class ChangePasswordView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @swagger_auto_schema(request_body=ChangePasswordSerializer)
+    def post(self, request):
+        serializer = ChangePasswordSerializer(data=request.data, context={'request':request})
+
+        if serializer.is_valid(raise_exception=True):
+            serializer.set_new_password()
+
+        return Response('Status: 200. Пароль успешно обновлен')
+
+
+class ForgotPasswordView(APIView):
+
+    @swagger_auto_schema(request_body=ForgotPaswordSerializer)
+    def post(self, request):
+        serializer = ForgotPaswordSerializer(data=request.data)
+        
+        if serializer.is_valid(raise_exception=True):
+            serializer.send_verification_email()
+
+        return Response('Вам выслали сообщение для восстановления аккаунта')
+
+
+
+class ForgotPasswordCompleteView(APIView):
+
+    @swagger_auto_schema(request_body=ForgotPasswordCompleteSerializer)
+    def post(self, request):
+        serializer = ForgotPasswordCompleteSerializer(data=request.data)
+
+        if serializer.is_valid(raise_exception=True):
+            serializer.set_new_password()
+            return Response('Пароль успешно изменён')
