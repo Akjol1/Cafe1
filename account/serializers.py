@@ -32,8 +32,6 @@ class RegisterSerializer(serializers.ModelSerializer):
         return user
 
 
-
-
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(min_length=4, required=True)
     new_password = serializers.CharField(min_length=4, required=True)
@@ -97,8 +95,8 @@ class ForgotPasswordCompleteSerializer(serializers.Serializer):
         password1 = attrs.get('password')
         password2 = attrs.get('password_confirm')
     
-        if not User.objects.filter(email=email, activation_code=code).exists():
-            raise serializers.ValidationError('Пользователь не найден или неправильный код')
+        # if not User.objects.filter(email=email, activation_code=code).exists():
+        #     raise serializers.ValidationError('Пользователь не найден или неправильный код')
         
         if password1 != password2:
             raise serializers.ValidationError('Пароли не совпадают')
