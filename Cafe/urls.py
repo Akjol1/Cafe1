@@ -38,7 +38,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include('account.urls')),
     path('docs/', schema_view.with_ui('swagger')),
-    url(r'^', include('tg_bot.urls')),
+    path('accounts/', include('allauths.urls')),
 
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
