@@ -45,14 +45,6 @@ class ActivationView(APIView):
 #     serializer_class = LoginSerializer
 
 
-class LogoutView(APIView):
-    permission_classes = [IsActivePermission]
-
-    def post(self, request):
-        user = request.user
-        Token.objects.filter(user=user).delete()
-        return Response('Вы вышли со совего аккаунта')
-
 
 class ChangePasswordView(APIView):
     permission_classes = [IsAuthenticated]
@@ -89,3 +81,5 @@ class ForgotPasswordCompleteView(APIView):
         if serializer.is_valid(raise_exception=True):
             serializer.set_new_password()
             return Response('Пароль успешно изменён')
+        
+
