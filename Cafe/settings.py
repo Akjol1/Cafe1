@@ -178,7 +178,7 @@ CELERY_RESULT_BACKEND = "redis://localhost:6379"
 
 CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:8000',
-    'https://domain.com',
+    'http://domain.com',
 ]
 
 CORS_ALLOWED_METHODS = [
