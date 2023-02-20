@@ -197,32 +197,18 @@ MEDIA_ROOT = BASE_DIR / 'media'
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-
-    'formatters': {
-        'main_format': {
-            'format': '{asctime} - {levelname} - {module} - {filename} - {message}',
-            'style': '{',
-        },
-
-    },
-    
-    'handler': {
-        'console': {
-            'class': 'Logging.StreamHandler',
-            'formatter': 'main_format',
-        },
+    'handlers': {
         'file': {
-            'class': 'Logging.FileHandler',
-            'formatter': 'main_format',
-            'filename': "/home/akjol/Desktop/Restaurant/Cafe/info.log",
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'info.log',
         },
     },
-
     'loggers': {
-        'main': {
-            'handler': ['console', 'file'],
+        'django': {
+            'handlers': ['file'],
             'level': 'INFO',
-            'propagete': True,
+            'propagate': True,
         },
     },
 }
