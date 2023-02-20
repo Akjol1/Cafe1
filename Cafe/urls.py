@@ -25,8 +25,8 @@ from django.conf import settings
 
 schema_view = get_schema_view(
     openapi.Info(
-    title='Joe Speen',
-    description='YouTub',
+    title='Restaurant',
+    description='Best Restaurant',
     default_version='v1'
     ),
     public=True

@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 from decouple import config
 from datetime import timedelta
@@ -191,3 +192,37 @@ STATIC_ROOT = BASE_DIR / 'static'
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+
+    'formatters': {
+        'main_format': {
+            'format': '{asctime} - {levelname} - {module} - {filename} - {message}',
+            'style': '{',
+        },
+
+    },
+    
+    'handler': {
+        'console': {
+            'class': 'Logging.StreamHandler',
+            'formatter': 'main_format',
+        },
+        'file': {
+            'class': 'Logging.FileHandler',
+            'formatter': 'main_format',
+            'filename': "/home/akjol/Desktop/Restaurant/Cafe/info.log",
+        },
+    },
+
+    'loggers': {
+        'main': {
+            'handler': ['console', 'file'],
+            'level': 'INFO',
+            'propagete': True,
+        },
+    },
+}

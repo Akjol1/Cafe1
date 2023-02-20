@@ -9,11 +9,16 @@ from .permissoins import IsActivePermission
 from .models import User
 from .serializers import ChangePasswordSerializer, ForgotPasswordCompleteSerializer, ForgotPaswordSerializer, RegisterSerializer
 
-
 from drf_yasg.utils import swagger_auto_schema
+
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class RegisterView(APIView):
+    logger.info("hello")
+
     @swagger_auto_schema(request_body=RegisterSerializer())
     def post(self, request):
         data = request.data
@@ -82,4 +87,3 @@ class ForgotPasswordCompleteView(APIView):
             serializer.set_new_password()
             return Response('Пароль успешно изменён')
         
-
