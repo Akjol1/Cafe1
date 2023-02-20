@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 from decouple import config
 from datetime import timedelta
+import logging
+
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -81,7 +83,6 @@ TEMPLATES = [
 ]
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 SITE_ID = 1
 
@@ -204,13 +205,32 @@ CORS_ALLOWED_METHODS = [
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-    'handlers': {
+
+    'formatters': {
+        'main_format': {
+            'format': '{asctime} - {levelname} - {module} - {filename} - {message}',
+            'style': '{',
+        },
+
+    },
+
+    'handler': {
         'console': {
-            'class': 'logging.StreamHandler',
+            'class': 'Logging.StreamHandler',
+            'formatter': 'main_format',
+        },
+        'file': {
+            'class': 'Logging.FileHandler',
+            'formatter': 'main_format',
+            'filename': "information.log",
         },
     },
-    'root': {
-        'handlers': ['console'],
-        'level': 'WARNING',
+
+    'loggers': {
+        'main': {
+            'hadlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagete': True,
+        },
     },
 }
