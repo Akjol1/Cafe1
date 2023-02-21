@@ -197,40 +197,25 @@ CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:8000',
     'https://domain.com',
 ]
-
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_METHODS = [
     'GET', 'POST', 'PATCH', 'PUT', 'OPTIONS', 'DELETE', 'UPDATE',
 ]
-
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
-
-    'formatters': {
-        'main_format': {
-            'format': '{asctime} - {levelname} - {module} - {filename} - {message}',
-            'style': '{',
-        },
-
-    },
-
-    'handler': {
-        'console': {
-            'class': 'Logging.StreamHandler',
-            'formatter': 'main_format',
-        },
+    'handlers': {
         'file': {
-            'class': 'Logging.FileHandler',
-            'formatter': 'main_format',
-            'filename': "information.log",
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'info.log',
         },
     },
-
     'loggers': {
-        'main': {
-            'hadlers': ['console', 'file'],
+        'django': {
+            'handlers': ['file'],
             'level': 'INFO',
-            'propagete': True,
+            'propagate': True,
         },
     },
 }

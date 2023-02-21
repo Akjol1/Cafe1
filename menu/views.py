@@ -36,7 +36,7 @@ class CommentView(ModelViewSet):
 class MenuViewSet(ModelViewSet):
     queryset = Menu.objects.all()
     serializer_class = MenuSerializer
-    filter_backends = [django_filters.rest_framework.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend, filters.CharFilter, filters.OrderingFilter]
     filterset_fields = ['category']
     search_fields = ['created_at']
     ordering_fields = ['created_at', 'title']

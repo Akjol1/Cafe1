@@ -41,8 +41,8 @@ class Menu(models.Model):
         super().save()
 
     class Meta:
-        verbose_name = "Категория"
-        verbose_name_plural = 'Категории'
+        verbose_name = "Меню"
+        verbose_name_plural = 'Menu'
 
 
 class Rating(models.Model):
@@ -62,7 +62,7 @@ class Rating(models.Model):
 
 
 class Comment(models.Model):
-    body = models.CharField(max_length=30, )
+    body = models.CharField(max_length=200)
     post = models.ForeignKey(Menu, on_delete=models.CASCADE, related_name='comments')
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
     created_at = models.DateTimeField(auto_now_add=True)
