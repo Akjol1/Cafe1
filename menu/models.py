@@ -6,6 +6,7 @@ User = get_user_model()
 
 
 class Category(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='categories')
     title = models.CharField(max_length=30, unique=True)
     slug = models.SlugField(max_length=30, primary_key=True, blank=True)
 
@@ -86,4 +87,6 @@ class Like(models.Model):
     is_liked = models.BooleanField(default=False)
 
     def __str__(self):
-        return f'{self.post}, Liked by {self.author.name}'
+        return f'{self.post}, Liked by {self.author}'
+
+

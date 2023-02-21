@@ -6,12 +6,6 @@ from .models import Category, Rating, Menu, Comment, Like
 from django.db.models import Avg
 
 
-class CategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Category
-        fields = ('title',)
-
-
 class CommentSerializer(serializers.ModelSerializer):
     author = serializers.ReadOnlyField(source='author.name')
 
@@ -24,6 +18,20 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = '__all__'
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    author = serializers.ReadOnlyField(source='author.name')
+
+    def create(self, validated_data):
+        request = self.context.get('request')
+        user = request.user
+        category = Category.objects.create(author=user, **validated_data)
+        return category
+
+    class Meta:
+        model = Category
+        fields = "__all__"
 
 
 class MenuSerializer(serializers.ModelSerializer):
@@ -55,8 +63,10 @@ class MenuSerializer(serializers.ModelSerializer):
             Comment.objects.filter(post=instance.pk),
             many=True
         ).data
+        representation['categories'] = CategorySerializer(
+            Category.object.filter(post=instance.pk)
+        ).data
         representation['rating'] = instance.rating.aggregate(Avg('rating'))['rating__avg']
-        # queryset = Like.objects.filter(is_liked=True)
         representation['likes_count'] = instance.likes.count()
 
         return representation
@@ -96,4 +106,6 @@ class LikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
         fields = "__all__"
+
+
 

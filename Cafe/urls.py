@@ -25,9 +25,9 @@ from django.conf import settings
 
 schema_view = get_schema_view(
     openapi.Info(
-    title='Joe Speen',
-    description='YouTub',
-    default_version='v1'
+    title='КЫРГЫЗЫМ',
+    description='ТЫ НЕ ПРОЙДЕШЬ',
+    default_version='СТАМБЛ ГАЙС'
     ),
     public=True
 )
@@ -37,7 +37,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include('account.urls')),
     path('docs/', schema_view.with_ui('swagger')),
-    path('menu/', include('menu.urls'))
+    path('menu/', include('menu.urls')),
+    path('social-auth/', include('social_django.urls', namespace="social")),
+
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

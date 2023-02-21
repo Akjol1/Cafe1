@@ -16,6 +16,20 @@ class CategoryListView(generics.ListAPIView):
     serializer_class = CategorySerializer
 
 
+
+    def get_permissions(self):
+        if self.action in ['list', 'retrieve']:
+            self.permission_classes = [AllowAny]
+
+        elif self.action == 'create':
+            self.permission_classes = [IsAdminAuthPermission]
+
+        elif self.action in ['update', 'partial_update', 'destroy']:
+                self.permission_classes = [IsAuthorPermission]
+
+        return super().get_permissions()
+
+
 class CommentView(ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
@@ -47,6 +61,22 @@ class MenuViewSet(ModelViewSet):
         comments = post.comments.all()
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
+
+    @action(['POST'], detail=True)
+    def comments(self, request, pk=None):
+        post = self.get_object()
+        categories = post.comments.all()
+        serializer = CategorySerializer(categories, many=True)
+        return Response(serializer.data)
+
+    @action(['PUT'], detail=True)
+    def put(self, request, pk=None):
+        put = self.get_object()
+        user = request.user
+        update = Menu.objects.all()
+        if self.action in ['partial_update']:
+            self.permission_classes = [IsAuthorPermission]
+        return super().put()
 
     @action(['POST', 'PATCH'], detail=True)
     def rating(self, request, pk=None):

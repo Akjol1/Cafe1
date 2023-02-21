@@ -32,8 +32,6 @@ class RegisterSerializer(serializers.ModelSerializer):
         return user
 
 
-
-
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(min_length=4, required=True)
     new_password = serializers.CharField(min_length=4, required=True)
@@ -67,7 +65,6 @@ class ChangePasswordSerializer(serializers.Serializer):
         user.set_password(new_pass)
         user.save()
 
-    
 
 class ForgotPaswordSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
@@ -82,7 +79,6 @@ class ForgotPaswordSerializer(serializers.Serializer):
         user = User.objects.get(email=email)
         user.create_activation_code()
         send_mail('Восстановление пароля', f'ваш код восстановления: {user.activation_code}', 'akzolkanaev81@gmail.com', [email])
-
 
 
 class ForgotPasswordCompleteSerializer(serializers.Serializer):
@@ -103,7 +99,6 @@ class ForgotPasswordCompleteSerializer(serializers.Serializer):
         if password1 != password2:
             raise serializers.ValidationError('Пароли не совпадают')
         return attrs
-
 
     def set_new_password(self):
         email = self.validated_data.get('email')
