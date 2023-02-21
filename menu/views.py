@@ -1,6 +1,7 @@
 import django_filters
 from django.shortcuts import render
 from django_filters import filters
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import generics
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ModelViewSet
@@ -14,6 +15,19 @@ from rest_framework.response import Response
 class CategoryListView(generics.ListAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+
+
+    def get_permissions(self):
+        if self.action in ['list', 'retrieve']:
+            self.permission_classes = [AllowAny]
+
+        elif self.action == 'create':
+            self.permission_classes = [IsAdminAuthPermission]
+
+        elif self.action in ['update', 'partial_update', 'destroy']:
+                self.permission_classes = [IsAuthorPermission]
+
+        return super().get_permissions()
 
 
 class CommentView(ModelViewSet):
@@ -36,7 +50,7 @@ class CommentView(ModelViewSet):
 class MenuViewSet(ModelViewSet):
     queryset = Menu.objects.all()
     serializer_class = MenuSerializer
-    filter_backends = [django_filters.rest_framework.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filter_backends = (DjangoFilterBackend, filters.OrderingFilter,)
     filterset_fields = ['category']
     search_fields = ['created_at']
     ordering_fields = ['created_at', 'title']

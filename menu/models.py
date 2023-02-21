@@ -41,8 +41,8 @@ class Menu(models.Model):
         super().save()
 
     class Meta:
-        verbose_name = "Категория"
-        verbose_name_plural = 'Категории'
+        verbose_name = "Menu"
+        verbose_name_plural = 'Меню'
 
 
 class Rating(models.Model):
